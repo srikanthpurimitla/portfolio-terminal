@@ -52,10 +52,31 @@ const Home = () => {
             className="w-full min-h-screen flex flex-col"
           >
             {/* 🚀 COMMAND NAV */}
-            <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-8 flex items-center justify-between pointer-events-auto">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-cyan/10 flex items-center justify-center font-black text-xs text-cyan border border-cyan/20 shadow-[0_0_15px_rgba(6,182,212,0.2)]">S</div>
-                <span className="text-[10px] font-black uppercase tracking-[4px] text-cyan/60 hidden md:block">SRIKANTH:/SYS$</span>
+            <nav className="absolute top-0 left-0 right-0 z-50 px-4 md:px-6 py-6 md:py-8 flex items-center justify-between pointer-events-auto">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-cyan/10 flex items-center justify-center font-black text-[10px] md:text-xs text-cyan border border-cyan/20 shadow-[0_0_15px_rgba(6,182,212,0.2)] shrink-0">S</div>
+                <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[2px] md:tracking-[4px] text-cyan/60 hidden sm:block">SRIKANTH:/SYS$</span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {/* Mobile Resume Link */}
+                <a 
+                  href="/Srikanth_Purimitla_Java_FullStack_Developer.pdf"
+                  download="Srikanth_Purimitla_Java_FullStack_Developer.pdf"
+                  className="lg:hidden p-3 glass-elite rounded-xl border border-white/10 text-cyan shadow-lg flex items-center gap-2"
+                  aria-label="Download Resume"
+                >
+                  <Zap size={18} className="animate-pulse" />
+                  <span className="text-[10px] font-bold uppercase tracking-wider">Resume</span>
+                </a>
+
+                {/* Mobile Toggle */}
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="lg:hidden p-3 glass-elite rounded-xl border border-white/10 text-cyan shadow-lg"
+                >
+                  {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                </button>
               </div>
 
               {/* Desktop CMD Buttons */}
@@ -75,91 +96,95 @@ const Home = () => {
                   </button>
                 ))}
               </div>
-
-              {/* Mobile Toggle */}
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-3 glass-elite rounded-xl border border-white/10 text-cyan shadow-lg"
-              >
-                {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
             </nav>
 
             {/* 📱 Mobile Menu Overlay */}
             <AnimatePresence>
               {isMenuOpen && (
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="fixed inset-0 z-[100] glass-elite backdrop-blur-2xl p-12 flex flex-col items-center justify-center gap-6 lg:hidden"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="fixed inset-0 z-[100] glass-elite backdrop-blur-2xl p-8 flex flex-col items-center justify-center gap-4 lg:hidden"
                 >
                   {sections.map(s => (
                     <button
                       key={s.id}
                       onClick={() => { setActiveSection(s.id); setIsMenuOpen(false); }}
-                      className={`text-base font-mono tracking-widest ${activeSection === s.id ? 'text-cyan' : 'text-white/40'}`}
+                      className={`text-sm md:text-base font-mono tracking-widest py-2 w-full text-center transition-all ${activeSection === s.id ? 'text-cyan bg-cyan/5 rounded-xl border border-cyan/10' : 'text-white/40'}`}
                     >
                       {`> ${s.name}`}
                     </button>
                   ))}
+                  
+                  {/* Additional Mobile Menu Resume Link */}
+                  <div className="w-full h-px bg-white/5 my-4" />
+                  <a 
+                    href="/Srikanth_Purimitla_Java_FullStack_Developer.pdf"
+                    download="Srikanth_Purimitla_Java_FullStack_Developer.pdf"
+                    className="w-full py-4 glass-elite rounded-2xl border border-cyan/20 bg-cyan/5 text-cyan text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-3"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Zap size={16} /> Download Resume (.PDF)
+                  </a>
                 </motion.div>
               )}
             </AnimatePresence>
 
             {/* 🚀 MAIN INTERFACE */}
-            <main className="flex-1 w-full max-w-[1750px] mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16 py-32 lg:py-0 min-h-screen">
+            <main className="flex-1 w-full max-w-[1750px] mx-auto px-4 md:px-10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-16 py-24 md:py-32 lg:py-0 min-h-screen">
 
               {/* Left: The Developer Model Stand */}
-              <div className="w-full lg:w-[42%] flex justify-center items-center h-full order-2 lg:order-1">
+              <div className="w-full lg:w-[42%] flex justify-center items-center h-full order-2 lg:order-1 scale-90 md:scale-100">
                 <DevStand />
               </div>
 
               {/* Right: The Terminal Hub */}
-              <div className="w-full lg:w-[58%] h-[600px] lg:h-[700px] relative z-10 order-1 lg:order-2">
+              <div className="w-full lg:w-[58%] h-[550px] md:h-[650px] lg:h-[700px] relative z-10 order-1 lg:order-2 mt-4 lg:mt-0">
                 <Terminal command={activeSection} content={RESUME_DATA[activeSection]} />
 
                 {/* Diagnostic Stats Overlay */}
-                <div className="absolute -top-12 left-0 right-0 flex justify-between px-2 opacity-30">
-                  <div className="flex items-center gap-3 text-[8px] font-black text-cyan tracking-[4px] uppercase underline underline-offset-8">
-                    <Zap size={10} className="animate-pulse" /> COMMAND_PROCESSOR: {activeSection}
+                <div className="absolute -top-10 md:-top-12 left-0 right-0 flex justify-between px-2 opacity-30">
+                  <div className="flex items-center gap-2 md:gap-3 text-[7px] md:text-[8px] font-black text-cyan tracking-[2px] md:tracking-[4px] uppercase underline underline-offset-8">
+                    <Zap size={8} className="animate-pulse" /> CMD_PROC: {activeSection}
                   </div>
-                  <div className="text-[8px] font-black text-gray/40 tracking-[4px] uppercase">
-                    MEMORY_SECURE: PASS // CPU: 2%
+                  <div className="text-[7px] md:text-[8px] font-black text-gray/40 tracking-[2px] md:tracking-[4px] uppercase">
+                    SYS_OK // CPU: 2%
                   </div>
                 </div>
               </div>
             </main>
 
             {/* Background Ambience Icons */}
-            <div className="absolute top-[20%] right-[10%] opacity-5 text-cyan animate-pulse-slow">
-              <Server size={180} />
+            <div className="absolute top-[20%] right-[10%] opacity-[0.03] md:opacity-5 text-cyan animate-pulse-slow">
+              <Server size={120} className="md:w-[180px] md:h-[180px]" />
             </div>
-            <div className="absolute bottom-[20%] left-[10%] opacity-5 text-blue animate-pulse-slow [animation-delay:2s]">
-              <Code2 size={240} />
+            <div className="absolute bottom-[20%] left-[10%] opacity-[0.03] md:opacity-5 text-blue animate-pulse-slow [animation-delay:2s]">
+              <Code2 size={160} className="md:w-[240px] md:h-[240px]" />
             </div>
 
-            {/* 📥 FLOATING RESUME DOWNLOAD (LEFT SIDE) */}
+            {/* 📥 FLOATING RESUME DOWNLOAD */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.8 }}
-              className="fixed left-6 bottom-32 z-50 hidden lg:block"
+              className="fixed bottom-8 left-1/2 -translate-x-1/2 lg:left-8 lg:bottom-32 lg:translate-x-0 z-50 w-[85%] lg:w-auto"
             >
               <a 
                 href="/Srikanth_Purimitla_Java_FullStack_Developer.pdf"
                 download="Srikanth_Purimitla_Java_FullStack_Developer.pdf"
-                className="flex items-center gap-4 px-6 py-4 glass-elite rounded-2xl border border-cyan/20 bg-cyan/5 hover:bg-cyan/10 hover:border-cyan/40 transition-all group shadow-[0_0_30px_rgba(6,182,212,0.1)]"
+                className="flex items-center justify-center lg:justify-start gap-4 px-6 md:px-8 py-4 md:py-5 glass-elite rounded-2xl md:rounded-[2rem] border border-cyan/20 bg-cyan/5 hover:bg-cyan/10 hover:border-cyan/40 transition-all group shadow-[0_20px_50px_rgba(6,182,212,0.15)]"
               >
-                <div className="bg-cyan/20 p-2 rounded-lg group-hover:scale-110 transition-transform">
-                  <TerminalIcon size={16} className="text-cyan" />
+                <div className="bg-cyan/20 p-2 md:p-3 rounded-xl group-hover:scale-110 transition-transform">
+                  <Zap size={18} className="text-cyan animate-pulse" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[9px] font-black uppercase tracking-[3px] text-cyan/60">System_Output</span>
-                  <span className="text-[11px] font-bold text-white uppercase tracking-wider">Download CV (.PDF)</span>
+                  <span className="text-[8px] md:text-[9px] font-black uppercase tracking-[3px] text-cyan/60">System_Output</span>
+                  <span className="text-[10px] md:text-[12px] font-black text-white uppercase tracking-widest">Download Professional CV</span>
                 </div>
               </a>
             </motion.div>
+
           </motion.div>
         )}
       </AnimatePresence>

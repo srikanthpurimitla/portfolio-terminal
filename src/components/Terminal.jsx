@@ -62,17 +62,17 @@ const Terminal = ({ command, content, title = "srikanth@sys:~$ system-viewer" })
   return (
     <div className="w-full h-full flex flex-col glass-elite rounded-2xl border border-white/10 shadow-[0_35px_80px_-15px_rgba(0,0,0,0.6)] overflow-hidden bg-[#0D1224]/80 backdrop-blur-3xl">
       {/* Terminal Title Bar */}
-      <div className="bg-white/[0.05] px-6 py-4 flex items-center justify-between border-b border-white/5">
-        <div className="flex gap-2.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56] opacity-60" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] opacity-60" />
-          <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F] opacity-60" />
+      <div className="bg-white/[0.05] px-4 md:px-6 py-3 md:py-4 flex items-center justify-between border-b border-white/5">
+        <div className="flex gap-2">
+          <div className="w-2 h-2 rounded-full bg-[#FF5F56] opacity-60" />
+          <div className="w-2 h-2 rounded-full bg-[#FFBD2E] opacity-60" />
+          <div className="w-2 h-2 rounded-full bg-[#27C93F] opacity-60" />
         </div>
-        <div className="text-[9px] font-black uppercase tracking-[3.5px] text-gray/40 flex items-center gap-3">
-          <TerminalIcon size={12} className="text-cyan/40" />
+        <div className="text-[7px] md:text-[9px] font-black uppercase tracking-[2px] md:tracking-[3.5px] text-gray/40 flex items-center gap-2 md:gap-3 px-2 text-center truncate">
+          <TerminalIcon size={10} className="text-cyan/40 shrink-0" />
           {title}
         </div>
-        <div className="text-[8px] text-cyan/20 font-mono tracking-widest hidden md:block">
+        <div className="text-[7px] text-cyan/20 font-mono tracking-widest hidden sm:block">
            SECURE_SHELL_V3
         </div>
       </div>
@@ -80,11 +80,11 @@ const Terminal = ({ command, content, title = "srikanth@sys:~$ system-viewer" })
       {/* Terminal Content */}
       <div 
         ref={scrollRef}
-        className="flex-1 p-8 md:p-12 overflow-y-auto font-mono text-[13px] md:text-sm leading-relaxed md:leading-loose custom-scrollbar"
+        className="flex-1 p-5 md:p-12 overflow-y-auto font-mono text-[11px] md:text-sm leading-relaxed md:leading-loose custom-scrollbar overflow-x-hidden"
       >
-        <div className="flex flex-col gap-8 w-full">
+        <div className="flex flex-col gap-6 md:gap-8 w-full">
            {/* The Active Command Line */}
-           <div className="flex items-center gap-4 text-cyan/80">
+           <div className="flex items-center gap-3 md:gap-4 text-cyan/80 shrink-0">
               <span className="text-green-500/60 font-black tracking-tighter">$</span>
               <span className="font-bold tracking-widest uppercase">
                 {`> ${displayedCommand}`}
@@ -92,7 +92,7 @@ const Terminal = ({ command, content, title = "srikanth@sys:~$ system-viewer" })
                   <motion.span 
                     animate={{ opacity: [1, 0] }} 
                     transition={{ duration: 0.6, repeat: Infinity }}
-                    className="inline-block w-2.5 h-4 bg-cyan/50 ml-1 translate-y-0.5"
+                    className="inline-block w-2 md:w-2.5 h-3.5 md:h-4 bg-cyan/50 ml-1 translate-y-0.5"
                   />
                 )}
               </span>
@@ -104,23 +104,24 @@ const Terminal = ({ command, content, title = "srikanth@sys:~$ system-viewer" })
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="whitespace-pre-wrap text-gray/40 font-medium"
+                  className="whitespace-pre-wrap text-gray/40 font-medium break-words w-full"
                 >
                   {displayedContent.split('\n').map((line, i) => {
                     const isBullet = line.startsWith('- ');
                     const isHeader = line.endsWith(')') && line.includes('('); // Match Experience e.g. "Backend Engineer @ CMS (May 2024)"
                     
                     return (
-                      <div key={i} className={`mb-1.5 flex gap-3 ${isBullet ? 'pl-4' : ''}`}>
-                         {isBullet && <div className="w-1.5 h-1.5 rounded-sm bg-cyan/20 mt-2 shrink-0" />}
+                      <div key={i} className={`mb-1.5 flex gap-2 md:gap-3 w-full ${isBullet ? 'pl-3 md:pl-4' : ''}`}>
+                         {isBullet && <div className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-sm bg-cyan/20 mt-1.5 md:mt-2 shrink-0" />}
                          <span className={`
-                           ${isHeader ? 'text-white font-black uppercase tracking-tight text-sm' : ''}
-                           ${!isHeader && line.endsWith(':') ? 'text-cyan/60 font-black uppercase tracking-[2px] text-[10px] mt-4 block mb-2' : ''}
+                           block w-full break-words
+                           ${isHeader ? 'text-white font-black uppercase tracking-tight text-[11px] md:text-sm' : ''}
+                           ${!isHeader && line.endsWith(':') ? 'text-cyan/60 font-black uppercase tracking-[1px] md:tracking-[2px] text-[9px] md:text-[10px] mt-3 md:mt-4 block mb-1 md:mb-2' : ''}
                          `}>
                            {line.split(' ').map((word, index) => {
                              if (word.startsWith('http')) {
                                return (
-                                 <a key={index} href={word} target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline hover:text-cyan/80 transition-all mr-1">
+                                 <a key={index} href={word} target="_blank" rel="noopener noreferrer" className="text-cyan hover:underline hover:text-cyan/80 transition-all mr-1 break-all">
                                    {word}
                                  </a>
                                );
@@ -136,7 +137,7 @@ const Terminal = ({ command, content, title = "srikanth@sys:~$ system-viewer" })
                     <motion.span 
                       animate={{ opacity: [1, 0] }} 
                       transition={{ duration: 0.8, repeat: Infinity }}
-                      className="inline-block w-2 h-4 bg-cyan ml-1 translate-y-0.5 shadow-[0_0_8px_cyan]"
+                      className="inline-block w-1.5 md:w-2 h-3.5 md:h-4 bg-cyan ml-1 translate-y-0.5 shadow-[0_0_8px_cyan]"
                     />
                   )}
                 </motion.div>
